@@ -6,7 +6,7 @@
 /*   By: jlopes-c <jlopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:53:45 by jlopes-c          #+#    #+#             */
-/*   Updated: 2025/05/15 15:26:55 by jlopes-c         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:57:04 by jlopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_philo **initialize_philosophers(t_info *data)
 		philo_assign[i]->is_thinking = 0;
 		philo_assign[i]->last_meal = 0;
 		philo_assign[i]->is_dead = 0;
+		
+		
 
 		give_forks(philo_assign[i]);
 		
@@ -107,6 +109,8 @@ void init_values(char **argv, t_info *data)
 	data->philo_ttd = ft_atoi(argv[2]);
 	data->philo_tte = ft_atoi(argv[3]);
 	data->philo_tts = ft_atoi(argv[4]);
+
+	data->start_philo = get_time_in_ms();
 
 	data->philo_num_eat = ft_atoi(argv[5]); //optional, look into its checks later
 

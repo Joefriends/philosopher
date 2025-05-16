@@ -6,7 +6,7 @@
 /*   By: jlopes-c <jlopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:03:38 by jlopes-c          #+#    #+#             */
-/*   Updated: 2025/05/15 15:40:09 by jlopes-c         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:02:02 by jlopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	exit_message(char *str, int status)
 	exit(status);
 }
 
-void	print_command(t_philo *data, char *str)
+void	print_current_action(t_philo *data, char *str)
 {
+	long time;
+	
 	pthread_mutex_lock(&data->info->print_lock);
-	//time = time..
+	time = get_time_in_ms() - data->info->start_philo;
 	printf("[%ld] %d%s\n", time, data->id, str);
 	pthread_mutex_unlock(&data->info->print_lock);
 	

@@ -1,4 +1,4 @@
-#include "philo.h"
+/* #include "philo.h"
 
 typedef struct s_thread
 {
@@ -95,4 +95,4 @@ int main()
 
 
 
-}
+} */
