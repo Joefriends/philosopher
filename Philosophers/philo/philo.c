@@ -6,7 +6,7 @@
 /*   By: jlopes-c <jlopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:53:49 by jlopes-c          #+#    #+#             */
-/*   Updated: 2025/05/16 12:59:59 by jlopes-c         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:41:49 by jlopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void *check_death(t_info *data, t_philo *philo)
 
 void eat_routine(t_philo *data)
 {
-	
 	pthread_mutex_lock(&data->info->forks[data->fork[0]]);
 	print_current_action(data,"has taken a fork");
 	pthread_mutex_lock(&data->info->forks[data->fork[1]]);
@@ -69,6 +68,7 @@ void eat_routine(t_philo *data)
 	pthread_mutex_lock(&data->meal_lock);
 	data->times_ate = data->times_ate + 1;
 	pthread_mutex_unlock(&data->meal_lock);
+
 	
 	pthread_mutex_unlock(&data->info->forks[data->fork[0]]);
 	//print_current_action(data,"Releases Fork 1");
@@ -88,11 +88,14 @@ void *philo_routine(void *data)
 	t_philo *philo;
 	philo = (t_philo *)data;
 
+	
 	if (philo->id % 2 == 0)
 		philo_sleep(10);
 	
 	while(philo)
+	{
 		eat_routine(philo);
+	}
 	return (NULL);
 }
 
@@ -100,24 +103,42 @@ void create_thrd(t_info *data)
 {
 	int i;
 	i = 0;
-	
-	while( i < data->philo_num)
+	while(i < data->philo_num)
 	{
 		pthread_create(&data->philo[i]->thread, NULL, philo_routine, data->philo[i]);
 		i++;
 	}
 }
 
+static void mutex_destroy(t_info *data)
+{
+	int i;
+	i = 0;
+	while (i < data->philo_num)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philo[i]->meal_lock);
+		i++;
+	}
+	pthread_mutex_destroy(&data->print_lock);
+}
+
 void end_thrd(t_info *data)
 {
 	int i;
 	i = 0;
-	while ( i < data->philo_num)
+	
+	while (i < data->philo_num)
 	{
 		pthread_join(data->philo[i]->thread, NULL);
 		i++;
 	}
+	mutex_destroy(data);
 }
+
+// destroy mutex tests
+
+
 
 
 
@@ -126,12 +147,15 @@ int main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		 exit(1);
 	//check_valid_stuff
-	t_info *data;
-	data = NULL;
+	t_info data;
+	
 	//initiate thread
-	init_values(argv,data);
-	create_thrd(data);
-	end_thrd(data);
+	init_values(argv, &data);
+	//works..
+	
+	create_thrd(&data); //works? not really
+
+	end_thrd(&data); //doesnt work
 
 	//start simulation
 

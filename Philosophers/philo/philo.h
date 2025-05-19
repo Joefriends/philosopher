@@ -6,7 +6,7 @@
 /*   By: jlopes-c <jlopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:53:52 by jlopes-c          #+#    #+#             */
-/*   Updated: 2025/05/16 11:05:07 by jlopes-c         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:31:19 by jlopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+typedef struct s_info t_info;
 typedef struct s_philo t_philo; //maybe making more structs is smarter...
 
 typedef struct s_info //General info, not specific to each philo

@@ -6,7 +6,7 @@
 /*   By: jlopes-c <jlopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:53:45 by jlopes-c          #+#    #+#             */
-/*   Updated: 2025/05/16 10:57:04 by jlopes-c         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:34:07 by jlopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ pthread_mutex_t *initialize_forks(t_info *data)
 
 void give_forks(t_philo *data)
 {
+	//printf("Teste 5 %d\n", data->info->philo_num); // data info philo num call WORKS... need to restructure this
 	data->fork[0] = data->id;
 	data->fork[1] = (data->id + 1) % data->info->philo_num; //to prevent getting a fork that doesnt exist
 	if (data->id % 2) // make even philosophers take the locks in a different order to prevent deadlock
 	{
-		data->fork[1] = data->id;
 		data->fork[0] = (data->id + 1) % data->info->philo_num;
+		data->fork[1] = data->id;
 	}
 }
 
@@ -61,7 +62,7 @@ t_philo **initialize_philosophers(t_info *data)
 	
 	while(i < data->philo_num)
 	{
-		philo_assign[i] = malloc(sizeof(t_philo));
+		philo_assign[i] = malloc(sizeof(t_philo) * 1); //hmm
 		if (!philo_assign[i])
 		{
 			//error
@@ -71,7 +72,7 @@ t_philo **initialize_philosophers(t_info *data)
 			//if (!pthread mutex init.. error..)
 		}
 
-		
+		philo_assign[i]->info = data;
 		philo_assign[i]->id = i;
 		philo_assign[i]->is_eating = 0;
 		philo_assign[i]->is_sleeping = 0;
@@ -79,18 +80,26 @@ t_philo **initialize_philosophers(t_info *data)
 		philo_assign[i]->last_meal = 0;
 		philo_assign[i]->is_dead = 0;
 		
-		
-
+		//printf("Teste %d\n", i);
 		give_forks(philo_assign[i]);
 		
 	
 		i++;
 	}
+	//works...
 	return (philo_assign);
 }         
 
 void init_values(char **argv, t_info *data)
 {
+	data->philo_num = ft_atoi(argv[1]);
+	data->philo_ttd = ft_atoi(argv[2]);
+	data->philo_tte = ft_atoi(argv[3]);
+	data->philo_tts = ft_atoi(argv[4]);
+
+	data->start_philo = get_time_in_ms();
+
+	data->philo_num_eat = ft_atoi(argv[5]);
 	
 	data->forks = initialize_forks(data);
 	if (!data->forks)
@@ -103,15 +112,9 @@ void init_values(char **argv, t_info *data)
 		//error
 	}
 	pthread_mutex_init(&data->print_lock, NULL);
-
 	
-	data->philo_num = ft_atoi(argv[1]);
-	data->philo_ttd = ft_atoi(argv[2]);
-	data->philo_tte = ft_atoi(argv[3]);
-	data->philo_tts = ft_atoi(argv[4]);
-
-	data->start_philo = get_time_in_ms();
-
-	data->philo_num_eat = ft_atoi(argv[5]); //optional, look into its checks later
+	//works...
+	
+	//optional, look into its checks later
 
 }
